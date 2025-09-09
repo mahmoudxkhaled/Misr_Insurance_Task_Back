@@ -1,0 +1,6 @@
+@Misr_Insurance_Task_Back_HostAddress = http://localhost:5186
+
+GET {{Misr_Insurance_Task_Back_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
