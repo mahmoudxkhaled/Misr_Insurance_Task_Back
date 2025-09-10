@@ -1,15 +1,19 @@
 ﻿namespace MIT.API;
 
 using FluentValidation;
-using MIT.BL;
-using MIT.DAL;
-
-public class CreateCustomerRequestValidator : AbstractValidator<AddCustomerDto>
+using global::MIT.BL;
+public class AddCustomerDtoValidator : AbstractValidator<AddCustomerDto>
 {
-    public CreateCustomerRequestValidator()
+    public AddCustomerDtoValidator()
     {
-        RuleFor(x => x.Name).NotEmpty().MaximumLength(200);
-        RuleFor(x => x.Email).NotEmpty().EmailAddress().MaximumLength(320);
+        RuleFor(x => x.Name)
+            .NotEmpty().WithMessage("Customer name is required.")
+            .MaximumLength(200);
+
+        RuleFor(x => x.Email)
+            .NotEmpty().WithMessage("Email is required.")
+            .EmailAddress().WithMessage("Invalid email format.")
+            .MaximumLength(320);
     }
 }
 

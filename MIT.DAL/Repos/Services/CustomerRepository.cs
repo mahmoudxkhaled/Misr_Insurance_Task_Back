@@ -1,4 +1,6 @@
-﻿namespace MIT.DAL;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace MIT.DAL;
 
 public class CustomerRepository : GenericRepository<Customer>, ICustomerRepository
 {
@@ -20,7 +22,12 @@ public class CustomerRepository : GenericRepository<Customer>, ICustomerReposito
 
     #region Functions
 
-
+    public async Task<bool> ExistsByEmailAsync(string email)
+    {
+        return await _context.Customer
+            .AsNoTracking()
+            .AnyAsync(c => c.Email == email);
+    }
     #endregion
 
 

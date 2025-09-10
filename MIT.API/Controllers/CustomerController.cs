@@ -3,17 +3,36 @@ using MIT.BL;
 
 namespace MIT.API.Controllers;
 
-[Route("api/[controller]")]
 [ApiController]
-public class CustomerController : ControllerBase
+[Route("api/[controller]")]
+public class CustomersController : ControllerBase
 {
 
-    private ICustomerService _customerService;
-    public CustomerController(ICustomerService customerService)
+    private readonly ICustomerService _customerService;
+
+    public CustomersController(ICustomerService customerService)
     {
         _customerService = customerService;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var result = await _customerService.GetAllAsync();
+        return result.IsSuccess ? Ok(result) : StatusCode(500, result);
+    }
 
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var result = await _customerService.GetByIdAsync(id);
+        return result.IsSuccess ? Ok(result) : NotFound(result);
+    }
 
+    [HttpPost]
+    public async Task<IActionResult> Create(AddCustomerDto request)
+    {
+        var result = await _customerService.AddAsync(request);
+        return result.IsSuccess ? Ok(result) : BadRequest(result);
+    }
 }

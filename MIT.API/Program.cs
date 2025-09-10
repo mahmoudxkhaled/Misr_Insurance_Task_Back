@@ -15,7 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddFluentValidationAutoValidation()
                 .AddFluentValidationClientsideAdapters();
 
-builder.Services.AddValidatorsFromAssemblyContaining<CreateCustomerRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<AddCustomerDtoValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateOrderRequestValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<OrderProductDtoValidator>();
 #endregion
