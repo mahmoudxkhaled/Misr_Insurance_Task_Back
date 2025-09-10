@@ -1,0 +1,83 @@
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace MIT.DAL;
+
+public class MITDbContext : DbContext
+{
+    public MITDbContext(DbContextOptions<MITDbContext> options) : base(options) { }
+
+    public DbSet<Product> Products => Set<Product>();
+    public DbSet<Customer> Customers => Set<Customer>();
+    public DbSet<Order> Orders => Set<Order>();
+    public DbSet<OrderProduct> OrderProducts => Set<OrderProduct>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+
+        // Customer
+        modelBuilder.Entity<Customer>(b =>
+        {
+            b.Property(x => x.Name)
+                  .IsRequired()
+                  .HasMaxLength(200);
+
+            b.Property(x => x.Email)
+                .IsRequired()
+                .HasMaxLength(320);
+
+            b.HasIndex(x => x.Email).IsUnique();
+        });
+
+        // Product
+        modelBuilder.Entity<Product>(b =>
+        {
+            b.Property(x => x.Name)
+             .IsRequired()
+             .HasMaxLength(200);
+
+            b.Property(x => x.Price).IsRequired();
+            b.Property(x => x.Stock).IsRequired();
+        });
+
+        // Order
+        modelBuilder.Entity<Order>(b =>
+        {
+            b.Property(x => x.OrderDate).IsRequired();
+
+            b.Property(x => x.Status)
+             .HasConversion<int>()
+             .IsRequired();
+
+            b.Property(x => x.TotalPrice).IsRequired();
+
+            b.HasOne(o => o.Customer)
+             .WithMany(c => c.Orders)
+             .HasForeignKey(o => o.CustomerId)
+             .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        // OrderProduct (composite key)
+        modelBuilder.Entity<OrderProduct>(b =>
+        {
+            b.HasKey(x => new { x.OrderId, x.ProductId });
+
+            b.HasOne(oi => oi.Order)
+             .WithMany(o => o.Items)
+             .HasForeignKey(oi => oi.OrderId);
+
+            b.HasOne(oi => oi.Product)
+             .WithMany(p => p.OrderItems)
+             .HasForeignKey(oi => oi.ProductId);
+
+            b.Property(x => x.Quantity).IsRequired();
+        });
+
+        // Optional: set default values
+        modelBuilder.Entity<Order>()
+            .Property(o => o.Status)
+            .HasDefaultValue("Pending");
+
+
+    }
+}

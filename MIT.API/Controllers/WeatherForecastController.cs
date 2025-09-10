@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Misr_Insurance_Task_Back.Controllers
+namespace MIT.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
