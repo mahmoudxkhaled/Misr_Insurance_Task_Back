@@ -1,4 +1,7 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using MIT.API;
 using MIT.BL;
 using MIT.DAL;
 
@@ -8,7 +11,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+#region FluentValidation
+builder.Services.AddFluentValidationAutoValidation()
+                .AddFluentValidationClientsideAdapters();
 
+builder.Services.AddValidatorsFromAssemblyContaining<CreateCustomerRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateOrderRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<OrderProductDtoValidator>();
+#endregion
 
 #region Database
 builder.Services.AddDbContext<MITDbContext>(options =>
@@ -17,23 +27,6 @@ builder.Services.AddDbContext<MITDbContext>(options =>
 
 builder.Services.AddBusinessLayer();
 builder.Services.AddDataAccessLayer();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 var app = builder.Build();
 
