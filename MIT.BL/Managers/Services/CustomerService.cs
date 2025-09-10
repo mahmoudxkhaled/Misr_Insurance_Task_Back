@@ -62,7 +62,7 @@ public class CustomerService : ICustomerService
     {
         try
         {
-            if (await _unitOfWork.CustomerRepository.CustomerExistsByEmailAsync(request.Email))
+            if (await _unitOfWork.CustomerRepository.ExistsByEmailAsync(request.Email))
                 return new ApiResult<GetCustomerDto> { IsSuccess = false, Message = "Email already exists" };
 
             var entity = new Customer

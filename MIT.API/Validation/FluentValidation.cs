@@ -2,6 +2,8 @@
 
 using FluentValidation;
 using global::MIT.BL;
+using MIT.DAL;
+
 public class AddCustomerDtoValidator : AbstractValidator<AddCustomerDto>
 {
     public AddCustomerDtoValidator()

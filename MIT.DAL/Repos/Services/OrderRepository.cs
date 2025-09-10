@@ -1,4 +1,6 @@
-﻿namespace MIT.DAL;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace MIT.DAL;
 
 public class OrderRepository : GenericRepository<Order>, IOrderRepository
 {
@@ -20,7 +22,14 @@ public class OrderRepository : GenericRepository<Order>, IOrderRepository
 
     #region Functions
 
-
+    public async Task<Order?> GetOrderByIdWithProductsAsync(int id)
+    {
+        return await _context.Order
+            .Include(o => o.Customer)
+            .Include(o => o.Items)
+                .ThenInclude(op => op.Product)
+            .FirstOrDefaultAsync(o => o.Id == id);
+    }
     #endregion
 
 

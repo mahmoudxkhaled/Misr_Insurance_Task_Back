@@ -1,4 +1,6 @@
-﻿namespace MIT.DAL;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace MIT.DAL;
 
 public class ProductRepository : GenericRepository<Product>, IProductRepository
 {
@@ -20,6 +22,13 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
 
     #region Functions
 
+    public Task<List<Product>> GetByIdsAsync(IEnumerable<int> ids)
+    {
+
+        return _context.Product.AsNoTracking()
+                               .Where(p => ids.Contains(p.Id))
+                               .ToListAsync();
+    }
 
     #endregion
 

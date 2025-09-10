@@ -16,21 +16,21 @@ public class CustomersController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAllCustomers()
     {
         var result = await _customerService.GetAllAsync();
         return result.IsSuccess ? Ok(result) : StatusCode(500, result);
     }
 
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    public async Task<IActionResult> GetCustomerById(int id)
     {
         var result = await _customerService.GetByIdAsync(id);
         return result.IsSuccess ? Ok(result) : NotFound(result);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(AddCustomerDto request)
+    public async Task<IActionResult> AddNewCustomer(AddCustomerDto request)
     {
         var result = await _customerService.AddAsync(request);
         return result.IsSuccess ? Ok(result) : BadRequest(result);

@@ -2,7 +2,7 @@
 
 public interface ICustomerRepository : IGenericRepository<Customer>
 {
-    Task<bool> CustomerExistsByEmailAsync(string email);
+    Task<bool> ExistsByEmailAsync(string email);
 
 
 }

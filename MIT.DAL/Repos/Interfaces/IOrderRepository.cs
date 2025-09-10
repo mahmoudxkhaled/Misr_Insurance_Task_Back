@@ -2,8 +2,5 @@
 
 public interface IOrderRepository : IGenericRepository<Order>
 {
-
-
-
-
+    Task<Order?> GetOrderByIdWithProductsAsync(int id);
 }
