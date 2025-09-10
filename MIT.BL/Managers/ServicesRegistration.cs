@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using MIT.DAL;
 
 namespace MIT.BL;
 
@@ -7,7 +8,7 @@ public static class ServicesRegistration
     public static void AddDataAccessLayer(this IServiceCollection services)
     {
         services.Scan(scan => scan
-            .FromAssemblyOf<BookRepository>()
+            .FromAssemblyOf<CustomerRepository>()
             .AddClasses(classes => classes.Where(c => c.Name.EndsWith("Repository")))
             .AsImplementedInterfaces()
             .WithScopedLifetime());
@@ -18,7 +19,7 @@ public static class ServicesRegistration
     public static void AddBusinessLayer(this IServiceCollection services)
     {
         services.Scan(scan => scan
-            .FromAssemblyOf<BookService>()
+            .FromAssemblyOf<ICustomerService>()
             .AddClasses(classes => classes.Where(c => c.Name.EndsWith("Service")))
             .AsImplementedInterfaces()
             .WithScopedLifetime());

@@ -1,7 +1,10 @@
 ﻿namespace MIT.DAL;
 
-public interface IProductRepository
+public interface IProductRepository : IGenericRepository<Product>
 {
 
 
 }
+
+
+

@@ -1,5 +1,10 @@
 ﻿namespace MIT.DAL;
 
-public interface IOrderProductRepository
+public interface IOrderProductRepository : IGenericRepository<OrderProduct>
 {
+
+
+
+
+
 }

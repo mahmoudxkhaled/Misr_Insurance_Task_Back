@@ -9,8 +9,6 @@
   <ItemGroup>
     <Folder Include="Dtos\" />
     <Folder Include="Filters\" />
-    <Folder Include="Managers\Interfaces\" />
-    <Folder Include="Managers\Services\" />
     <Folder Include="Shared\" />
   </ItemGroup>
 

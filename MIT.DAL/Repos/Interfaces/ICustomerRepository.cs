@@ -1,5 +1,13 @@
 ﻿namespace MIT.DAL;
 
-public interface ICustomerRepository
+public interface ICustomerRepository : IGenericRepository<Customer>
 {
+
+
+
+
+
+
+
+
 }

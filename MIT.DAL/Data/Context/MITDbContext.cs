@@ -6,10 +6,10 @@ public class MITDbContext : DbContext
 {
     public MITDbContext(DbContextOptions<MITDbContext> options) : base(options) { }
 
-    public DbSet<Product> Products => Set<Product>();
-    public DbSet<Customer> Customers => Set<Customer>();
-    public DbSet<Order> Orders => Set<Order>();
-    public DbSet<OrderProduct> OrderProducts => Set<OrderProduct>();
+    public DbSet<Product> Product => Set<Product>();
+    public DbSet<Customer> Customer => Set<Customer>();
+    public DbSet<Order> Order => Set<Order>();
+    public DbSet<OrderProduct> OrderProduct => Set<OrderProduct>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -73,10 +73,6 @@ public class MITDbContext : DbContext
             b.Property(x => x.Quantity).IsRequired();
         });
 
-        // Optional: set default values
-        modelBuilder.Entity<Order>()
-            .Property(o => o.Status)
-            .HasDefaultValue("Pending");
 
 
     }

@@ -1,5 +1,9 @@
 ﻿namespace MIT.DAL;
 
-public interface IOrderRepository
+public interface IOrderRepository : IGenericRepository<Order>
 {
+
+
+
+
 }
