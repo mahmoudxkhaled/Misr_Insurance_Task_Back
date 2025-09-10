@@ -16,8 +16,7 @@ builder.Services.AddFluentValidationAutoValidation()
                 .AddFluentValidationClientsideAdapters();
 
 builder.Services.AddValidatorsFromAssemblyContaining<AddCustomerDtoValidator>();
-builder.Services.AddValidatorsFromAssemblyContaining<CreateOrderRequestValidator>();
-builder.Services.AddValidatorsFromAssemblyContaining<OrderProductDtoValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<AddOrderDtoValidator>();
 #endregion
 
 #region Database
@@ -37,5 +36,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+DatabaseSeeder.Seed(app);
 
 app.Run();

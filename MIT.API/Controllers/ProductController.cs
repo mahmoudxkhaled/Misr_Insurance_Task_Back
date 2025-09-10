@@ -13,5 +13,4 @@ public class ProductController : ControllerBase
         _productService = productService;
     }
 
-
 }

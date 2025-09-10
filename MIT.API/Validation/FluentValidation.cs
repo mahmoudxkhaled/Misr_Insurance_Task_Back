@@ -2,7 +2,6 @@
 
 using FluentValidation;
 using global::MIT.BL;
-using MIT.DAL;
 
 public class AddCustomerDtoValidator : AbstractValidator<AddCustomerDto>
 {
@@ -19,29 +18,17 @@ public class AddCustomerDtoValidator : AbstractValidator<AddCustomerDto>
     }
 }
 
-public class CreateOrderRequestValidator : AbstractValidator<AddOrderDto>
+public class AddOrderDtoValidator : AbstractValidator<AddOrderDto>
 {
-    public CreateOrderRequestValidator()
+    public AddOrderDtoValidator()
     {
         RuleFor(x => x.CustomerId).GreaterThan(0);
 
-        // If using product IDs only:
         RuleFor(x => x.ProductIds)
             .NotNull().WithMessage("Products are required.")
             .Must(p => p.Count > 0).WithMessage("Order must contain at least one product.");
 
-        // If using items with quantity, use:
-        // RuleFor(x => x.Items).NotEmpty();
-        // RuleForEach(x => x.Items).SetValidator(new OrderItemDtoValidator());
+
     }
 }
 
-public class OrderProductDtoValidator : AbstractValidator<OrderProduct>
-{
-    public OrderProductDtoValidator()
-    {
-        RuleFor(x => x.ProductId).GreaterThan(0);
-        RuleFor(x => x.Quantity).GreaterThan(0)
-            .WithMessage("Quantity must be at least 1.");
-    }
-}

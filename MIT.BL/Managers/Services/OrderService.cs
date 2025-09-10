@@ -25,34 +25,19 @@ public class OrderService : IOrderService
             if (customer is null)
                 return new ApiResult<GetOrderDto> { IsSuccess = false, Message = $"Customer with id {request.CustomerId} not found" };
 
-            // load products (assumes IDs are unique in request)
             var products = await _unitOfWork.ProductRepository.GetByIdsAsync(request.ProductIds);
 
-            // ensure all requested products exist (still a light check)
-            if (products.Count != request.ProductIds.Count)
-            {
-                var foundIds = products.Select(p => p.Id).ToHashSet();
-                var missing = request.ProductIds.Where(id => !foundIds.Contains(id));
-                return new ApiResult<GetOrderDto>
-                {
-                    IsSuccess = false,
-                    Message = $"Product(s) not found: {string.Join(", ", missing)}"
-                };
-            }
-
-            // create order (no stock deduction here; handled when marking Delivered)
             var order = new Order
             {
                 CustomerId = request.CustomerId,
-                OrderDate = DateTime.UtcNow,
+                OrderDate = DateTime.Now,
                 Status = OrderStatus.Pending.ToString(),
                 TotalPrice = 0
             };
 
             await _unitOfWork.OrderRepository.AddAsync(order);
-            await _unitOfWork.SaveChangesAsync(); // get order.Id
+            await _unitOfWork.SaveChangesAsync();
 
-            // add items (each with Quantity = 1) and compute total
             double total = 0;
             foreach (var p in products)
             {
@@ -60,17 +45,14 @@ public class OrderService : IOrderService
                 {
                     OrderId = order.Id,
                     ProductId = p.Id,
-                    Quantity = 1
                 });
                 total += p.Price;
             }
 
-            // finalize total
             order.TotalPrice = total;
             _unitOfWork.OrderRepository.Update(order);
             await _unitOfWork.SaveChangesAsync();
 
-            // response
             return new ApiResult<GetOrderDto>
             {
                 IsSuccess = true,
@@ -100,7 +82,7 @@ public class OrderService : IOrderService
             if (order == null)
                 return new ApiResult<GetOrderDto> { IsSuccess = false, Message = $"Order with id {id} not found" };
 
-            var numberOfProducts = order.Items.Sum(i => i.Quantity);
+            var numberOfProducts = order.Items.Count;
             return new ApiResult<GetOrderDto>
             {
                 IsSuccess = true,
@@ -140,10 +122,10 @@ public class OrderService : IOrderService
                     if (product == null)
                         return new ApiResult { IsSuccess = false, Message = $"Product {item.ProductId} not found" };
 
-                    if (product.Stock < item.Quantity)
+                    if (product.Stock < 1)
                         return new ApiResult { IsSuccess = false, Message = $"Insufficient stock for product {product.Name}" };
 
-                    product.Stock -= item.Quantity;
+                    product.Stock -= 1;
                 }
             }
 

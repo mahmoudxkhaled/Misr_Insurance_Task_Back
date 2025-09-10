@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Dtos\ProductDto\" />
-    <Folder Include="Filters\" />
   </ItemGroup>
 
   <ItemGroup>

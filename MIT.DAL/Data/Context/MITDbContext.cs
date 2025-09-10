@@ -45,10 +45,6 @@ public class MITDbContext : DbContext
         {
             b.Property(x => x.OrderDate).IsRequired();
 
-            b.Property(x => x.Status)
-             .HasConversion<int>()
-             .IsRequired();
-
             b.Property(x => x.TotalPrice).IsRequired();
 
             b.HasOne(o => o.Customer)
@@ -57,11 +53,9 @@ public class MITDbContext : DbContext
              .OnDelete(DeleteBehavior.Restrict);
         });
 
-        // OrderProduct (composite key)
+        //order product
         modelBuilder.Entity<OrderProduct>(b =>
         {
-            b.HasKey(x => new { x.OrderId, x.ProductId });
-
             b.HasOne(oi => oi.Order)
              .WithMany(o => o.Items)
              .HasForeignKey(oi => oi.OrderId);
@@ -69,11 +63,7 @@ public class MITDbContext : DbContext
             b.HasOne(oi => oi.Product)
              .WithMany(p => p.OrderItems)
              .HasForeignKey(oi => oi.ProductId);
-
-            b.Property(x => x.Quantity).IsRequired();
         });
-
-
 
     }
 }
